@@ -14,5 +14,5 @@ public interface PostMapper {
 
     public void deletePost(String content, String writer); // 게시글 삭제
 
-    // 이곳에 게시글 수정 메소드를 작성합니다.
+    public void updatePost(String content, String writer, String id); // 게시글 수정
 }

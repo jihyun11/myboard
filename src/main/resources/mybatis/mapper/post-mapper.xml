@@ -14,4 +14,9 @@
         DELETE FROM post WHERE content = #{content} and writer = #{writer};
     </delete>
 
+    <update id="updatePost" parameterType="String">
+        UPDATE post SET content = #{content}, writer = #{writer}
+                    where id = #{id};
+    </update>
+
 </mapper>
