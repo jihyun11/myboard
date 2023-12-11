@@ -30,7 +30,10 @@ public class PostService {
         postMapper.deletePost(content, writer);
     } // 게시글 삭제
 
-    // 이곳에 게시글 수정 메소드를 작성합니다.
+    public void updatePost(String content, String writer, String id) {
+        postMapper.updatePost(content, writer, id);
+        System.out.println("업데이트 서비스");
+    } // 게시글 수정
 
 
 }

@@ -114,13 +114,25 @@
                     <div class="w3-card w3-round w3-white">
                         <div class="w3-container w3-padding">
 
-                            <input class="w3-input w3-border" style="width:30%" type="text" name="content" th:value="${post.content}"/></p>
-                            <input class="w3-input w3-border" style="width:30%" type="text" name="writer" th:value="${post.writer}"/></p>
+                            <input class="w3-input w3-border" style="width:30%" type="text" name="content" th:value="${post.content}"/><p>
+                            <input class="w3-input w3-border" style="width:30%" type="text" name="writer" th:value="${post.writer}"/><p>
+
+<!--                            <!- 아래는 수정용으로 따로 페이지 만들어서 빼주기-->
+                            <h3>수정용 폼</h3>
+                            <form action="/update" method="post">
+                                <input class="w3-input w3-border" style="width:30%" type="text" name="content" th:value="${post.content}"/><p>
+                                <input class="w3-input w3-border" style="width:30%" type="text" name="writer" th:value="${post.writer}"/><p>
+                                <input class="w3-input w3-border" style="width:30%" type="text" name="id" th:value="${post.id}"/><p>
+<!--                                update는 '사용자가 수정한 내용' 자체를 매개변수로 받으므로, type에서 hidden을 쓰면 안되고-->
+<!--                                눈에 보이게끔 만들어서 사용자에게 직접 수정하게 해야 한다.-->
+                                <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  수정</button>
+                            </form>
                             <form action="/delete" method="post">
-                                <input class="w3-input w3-border" style="width:30%" type="hidden" name="content" th:value="${post.content}"/></p>
-                                <input class="w3-input w3-border" style="width:30%" type="hidden" name="writer" th:value="${post.writer}"/></p>
+                                <input class="w3-input w3-border" style="width:30%" type="hidden" name="content" th:value="${post.content}"/><p>
+                                <input class="w3-input w3-border" style="width:30%" type="hidden" name="writer" th:value="${post.writer}"/><p>
                             <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>  삭제</button>
                             </form>
+
                         </div>
                     </div>
                 </div>

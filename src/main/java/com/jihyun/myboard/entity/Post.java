@@ -8,10 +8,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Setter
 public class Post {
 
-    private String writer; // 작성자
+    private String id; // 식별용 아이디
 
     private String content; // 내용
 
-    private String id; // 식별용 아이디
+    private String writer; // 작성자
 
 }

@@ -46,6 +46,14 @@ public class PostController {
         return "redirect:/guest";
     }
 
-    // 이곳에 게시글 수정(Post) 컨트롤러를 작성합니다.
+    // 게시글 수정
+    @PostMapping("/update")
+    public String updatePost(@RequestParam String content,
+                             @RequestParam String writer,
+                             @RequestParam String id) {
+        postService.updatePost(content, writer, id);
+        System.out.println("업데이트 컨트롤러");
+        return "redirect:/guest";
+    }
 
 }
