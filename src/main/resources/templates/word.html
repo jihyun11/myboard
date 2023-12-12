@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가타카나 퀴즈</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<h1>가타카나 퀴즈</h1>
+<h4>해당 가타카나 발음과 같은 한글 발음을 고르세요</h4>
+<p id="kataWord">[가타카나 글자]</p>
+<ul>
+    <li><button id="option1">1번</button></li>
+    <li><button id="option2">2번</button></li>
+    <li><button id="option3">3번</button></li>
+    <li><button id="option4">4번</button></li>
+</ul>
+<p id="score">점수: 0</p>
+
+<div id="google_translate_element" class="hd_lang"></div>
+
+<div>
+    <h1>모르겠으면 번역해 보기!!</h1>
+    <form id="transExForm" name="transExForm">
+        번역할 언어 <br>
+        <select id="src_lang" name="src_lang">
+            <option value="kr">한국어</option>
+            <option value="en">영어</option>
+            <option value="jp">일본어</option>
+        </select>
+        <br>
+        번역 결과 언어 <br>
+        <select id="target_lang" name="target_lang">
+            <option value="en">영어</option>
+            <option value="kr">한국어</option>
+            <option value="jp">일본어</option>
+        </select>
+        <br>
+        <br>
+        <h2>번역할 내용<br></h2>
+        <textarea id="query" name="query" cols="80" rows="5"></textarea>
+
+    </form>
+</div>
+<div>
+    <input type="button" onclick="process()">Translation</input>
+    <br>
+
+    <h2>번역완료<br></h2>
+    <textarea id="result_translation" name="result_translation" cols="80" rows="5"></textarea>
+
+</div>
+
+
+
+
+<script>
+    const words = [
+        { kata: 'ア', hangul: '아' },
+        { kata: 'イ', hangul: '이' },
+        { kata: 'ウ', hangul: '우' },
+        { kata: 'エ', hangul: '에' },
+        { kata: 'オ', hangul: '오' },
+        { kata: 'カ', hangul: '카' },
+        { kata: 'キ', hangul: '키' },
+        { kata: 'ク', hangul: '쿠' },
+        { kata: 'ケ', hangul: '케' },
+        { kata: 'コ', hangul: '코' },
+        { kata: 'サ', hangul: '사' },
+        { kata: 'シ', hangul: '시' },
+        { kata: 'ス', hangul: '스' },
+        { kata: 'セ', hangul: '세' },
+        { kata: 'ソ', hangul: '소' },
+        { kata: 'タ', hangul: '타' },
+        { kata: 'チ', hangul: '치' },
+        { kata: 'ツ', hangul: '츠' },
+        { kata: 'テ', hangul: '테' },
+        { kata: 'ト', hangul: '토' },
+        { kata: 'ナ', hangul: '나' },
+        { kata: 'ニ', hangul: '니' },
+        { kata: 'ヌ', hangul: '누' },
+        { kata: 'ネ', hangul: '네' },
+        { kata: 'ノ', hangul: '노' },
+        { kata: 'ハ', hangul: '하' },
+        { kata: 'ヒ', hangul: '히' },
+        { kata: 'フ', hangul: '후' },
+        { kata: 'ヘ', hangul: '헤' },
+        { kata: 'ホ', hangul: '호' },
+        { kata: 'マ', hangul: '마' },
+        { kata: 'ミ', hangul: '미' },
+        { kata: 'ム', hangul: '무' },
+        { kata: 'メ', hangul: '메' },
+        { kata: 'モ', hangul: '모' },
+        { kata: 'ヤ', hangul: '야' },
+        { kata: 'ユ', hangul: '유' },
+        { kata: 'ヨ', hangul: '요' },
+        { kata: 'ラ', hangul: '라' },
+        { kata: 'リ', hangul: '리' },
+        { kata: 'ル', hangul: '루' },
+        { kata: 'レ', hangul: '레' },
+        { kata: 'ロ', hangul: '로' },
+        { kata: 'ワ', hangul: '와' },
+        { kata: 'ヲ', hangul: '오' },
+        { kata: 'ン', hangul: '응' }
+        // 여기에 더 많은 단어를 추가할 수 있습니다.
+    ];
+
+    let score = 0;
+
+    function setNewWord() {
+        const randomWord = words[Math.floor(Math.random() * words.length)];
+        document.getElementById('kataWord').textContent = randomWord.kata;
+
+        const options = document.querySelectorAll('button');
+        const correctAnswer = randomWord.hangul;
+
+        // 잘못된 답안 선택
+        let incorrectAnswers = words
+            .filter(word => word.hangul !== correctAnswer)
+            .map(word => word.hangul)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+
+        // 정답과 잘못된 답안을 합치고 섞기
+        let answers = [correctAnswer, ...incorrectAnswers].sort(() => Math.random() - 0.5);
+
+        options.forEach((button, index) => {
+            button.textContent = answers[index];
+            button.onclick = () => checkAnswer(answers[index], correctAnswer);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        if(selected === correct) {
+            score++;
+            alert('정답입니다!');
+        } else {
+            score--;
+            alert('틀렸습니다!');
+        }
+        document.getElementById('score').textContent = `점수: ${score}`;
+        setNewWord();
+    }
+
+    setNewWord(); // 페이지 로드 시 새 단어 설정
+
+    function process() {
+
+        $.ajax({
+            url: "https://dapi.kakao.com/v2/translation/translate",
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            headers: {
+                "Authorization": "KakaoAK 0de6a503aa4f3970c637816b7565e984"
+            },
+            data: $("#transExForm").serialize(),
+            success: function (data) {
+                $("#result_translation").val(data.translated_text);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var errorMsg = "Ready Status: ";
+                errorMsg += jqXHR.readyState + "\n";
+                errorMsg += "Status Text:";
+                errorMsg += jqXHR.readystatusText + "\n";
+                alert(errorMsg);
+            }
+        })
+    }
+
+
+
+
+
+</script>
+
+</body>
+</html>
