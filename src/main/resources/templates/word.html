@@ -21,42 +21,58 @@
 
 <div id="google_translate_element" class="hd_lang"></div>
 
-<div>
-    <h1>모르겠으면 번역해 보기!!</h1>
-    <form id="transExForm" name="transExForm">
-        번역할 언어 <br>
-        <select id="src_lang" name="src_lang">
-            <option value="kr">한국어</option>
-            <option value="en">영어</option>
-            <option value="jp">일본어</option>
-        </select>
-        <br>
-        번역 결과 언어 <br>
-        <select id="target_lang" name="target_lang">
-            <option value="en">영어</option>
-            <option value="kr">한국어</option>
-            <option value="jp">일본어</option>
-        </select>
-        <br>
-        <br>
-        <h2>번역할 내용<br></h2>
-        <textarea id="query" name="query" cols="80" rows="5"></textarea>
+<h1>모르겠으면 번역해 보기!!</h1>
+<form id="textToTranslate" method="post" action="/word">
+    번역할 언어 <br>
+    <select id="src_lang" name="src_lang" onchange= "selectBoxChangeSrc(this.value);">
+        <option value="ko">한국어</option>
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+    </select>
 
-    </form>
-</div>
-<div>
-    <input type="button" onclick="process()">Translation</input>
+
     <br>
+    번역 결과 언어 <br>
+    <select id="target_lang" name="target_lang" onchange="selectBoxChangeTarget(this.value);">
+        <option value="ja">일본어</option>
+        <option value="en">영어</option>
+        <option value="ko">한국어</option>
+    </select>
+    <br><br>
+    <h2>번역내용<br></h2>
+    <textarea id="text" name="text" cols="80" rows="5" th:text="${originalText}" ></textarea>
 
-    <h2>번역완료<br></h2>
-    <textarea id="result_translation" name="result_translation" cols="80" rows="5"></textarea>
+    <br>
+    <input type="submit" value="번역">
 
-</div>
+    </div>
+    <div>
+        <h2>번역완료<br></h2>
+        <textarea id="translatedText" cols="80" rows="5" th:text="${result}"></textarea>
+    </div>
+</form>
 
 
 
 
 <script>
+
+    function selectBoxChangeSrc(srcLang) {
+        $.ajax({
+            url : "/word",
+            type : "POST",
+            data : {"src_lang" : srcLang}
+        })
+    }
+
+    function selectBoxChangeTarget(targetLang) {
+        $.ajax({
+            url : "/word",
+            type : "POST",
+            data : {"target_lang" : targetLang}
+        })
+    }
+
     const words = [
         { kata: 'ア', hangul: '아' },
         { kata: 'イ', hangul: '이' },
@@ -145,33 +161,6 @@
     }
 
     setNewWord(); // 페이지 로드 시 새 단어 설정
-
-    function process() {
-
-        $.ajax({
-            url: "https://dapi.kakao.com/v2/translation/translate",
-            type: "POST",
-            contentType: "application/x-www-form-urlencoded",
-            headers: {
-                "Authorization": "KakaoAK 0de6a503aa4f3970c637816b7565e984"
-            },
-            data: $("#transExForm").serialize(),
-            success: function (data) {
-                $("#result_translation").val(data.translated_text);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                var errorMsg = "Ready Status: ";
-                errorMsg += jqXHR.readyState + "\n";
-                errorMsg += "Status Text:";
-                errorMsg += jqXHR.readystatusText + "\n";
-                alert(errorMsg);
-            }
-        })
-    }
-
-
-
-
 
 </script>
 
