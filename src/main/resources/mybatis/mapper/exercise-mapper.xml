@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="euc-kr"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jihyun.myboard.mapper.ExerciseMapper">
+    <insert id="insertEx" parameterType="String">
+        INSERT INTO Exercise (content, writer)
+        VALUES (#{content}, #{writer});
+    </insert>
+
+    <select id="selectEx" resultType="com.jihyun.myboard.entity.Exercise">
+        select id, content, writer from Exercise;
+    </select>
+
+    <delete id="deleteEx" parameterType="com.jihyun.myboard.entity.Exercise">
+        DELETE FROM Exercise WHERE id = #{id} and content = #{content} and writer = #{writer};
+    </delete>
+
+    <select id="exerciseSelectDetail" resultType="com.jihyun.myboard.entity.Exercise">
+        select id, content, writer from Exercise where id = #{idValue};
+    </select>
+
+    <update id="exerciseUpdateDetail" parameterType="com.jihyun.myboard.entity.Exercise">
+        UPDATE Exercise SET content = #{content}, writer = #{writer}
+        where id = #{id};
+    </update>
+
+</mapper>
