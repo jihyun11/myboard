@@ -22,8 +22,7 @@ public class ExerciseService {
     }
 
     public List<Exercise> selectEx() {
-        List<Exercise> selectExResult = exerciseMapper.selectEx();
-        return selectExResult;
+        return exerciseMapper.selectEx();
     }
 
     public void deleteEx(String id, String content, String writer) {
@@ -31,8 +30,7 @@ public class ExerciseService {
     }
 
     public Exercise exerciseSelectDetail(String idValue) {
-        Exercise exerciseSelectDetail = exerciseMapper.exerciseSelectDetail(idValue);
-        return exerciseSelectDetail;
+        return exerciseMapper.exerciseSelectDetail(idValue);
     }
 
     public void exerciseUpdateDetail(String id, String content, String writer) {

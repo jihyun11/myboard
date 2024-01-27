@@ -55,12 +55,11 @@ public class ExerciseController {
         return "/exerciseDetail";
     }
 
-    @PostMapping("/exercise/{idValue}")
-    public String exerciseUpdateDetail(@PathVariable("idValue") String idValue, //바로 링크에 있는 idValue 값을 넣으면 안되는 이유
-                                       @RequestParam String id,
+    @PostMapping("/exercise/detail")
+    public String exerciseUpdateDetail(@RequestParam String id,
                                        @RequestParam String content,
                                        @RequestParam String writer) {
-//        exerciseService.exerciseUpdateDetail(idValue, content, writer); 이건 안되는 이유?
+//        exerciseService.exerciseUpdateDetail(idValue, content, writer); todo 이 페이지에서 idValue 값은 필요가 없다.
         exerciseService.exerciseUpdateDetail(id, content, writer);
         return "redirect:/exercise";
     }

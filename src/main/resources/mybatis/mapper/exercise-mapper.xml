@@ -7,20 +7,20 @@
     </insert>
 
     <select id="selectEx" resultType="com.jihyun.myboard.entity.Exercise">
-        select id, content, writer from Exercise;
+        SELECT id, content, writer FROM Exercise;
     </select>
 
     <delete id="deleteEx" parameterType="com.jihyun.myboard.entity.Exercise">
-        DELETE FROM Exercise WHERE id = #{id} and content = #{content} and writer = #{writer};
+        DELETE FROM Exercise WHERE id = #{id} AND content = #{content} AND writer = #{writer};
     </delete>
 
     <select id="exerciseSelectDetail" resultType="com.jihyun.myboard.entity.Exercise">
-        select id, content, writer from Exercise where id = #{idValue};
+        SELECT id, content, writer FROM Exercise WHERE id = #{idValue};
     </select>
 
     <update id="exerciseUpdateDetail" parameterType="com.jihyun.myboard.entity.Exercise">
         UPDATE Exercise SET content = #{content}, writer = #{writer}
-        where id = #{id};
+        WHERE id = #{id};
     </update>
 
 </mapper>
