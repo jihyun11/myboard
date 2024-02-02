@@ -29,6 +29,26 @@
     </form>
 </div>
 
+<!-- 페이지네이션 -->
+<div class="pagination">
+    <ul style="display: flex;">
+        <li style="margin-right: 10px; list-style: none;">
+            <a th:if="${page != 1}" th:href="@{/exercise/contentlist(page=1)}" >&laquo; 맨처음</a>
+        </li>
+        <!--            <li>-->
+        <!--                <a th:if="${page > 1}" th:href="@{/members/contentlist(page=${(page-1)})}" style="margin-right: 10px; list-style: none;">이전</a>-->
+        <!--            </li>-->
+        <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" style="margin-right: 10px; list-style: none;">
+            <a th:href="@{/exercise/contentlist(page=${pageNumber})}" th:text="${pageNumber}"></a>
+        </li>
+        <li style="margin-right: 10px; list-style: none;">
+            <a th:if="${page < totalPages}" th:href="@{/exercise/contentlist(page=${page+1})}" >다음</a>
+        </li>
+        <li style="margin-right: 10px; list-style: none;">
+            <a th:if="${page < totalPages}" th:href="@{/exercise/contentlist(page=${totalPages})}" >맨끝 &raquo;</a>
+        </li>
+    </ul>
+</div>
 
 
 
