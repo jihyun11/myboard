@@ -15,17 +15,20 @@
     <p>
 </form>
 
-
-<div th:each="result : ${selectExResult}">
+<div>
+    <input type="text" id="search" name="search" placeholder="검색어를 입력하세요">
+    <button id="searchButton">검색</button>
+</div>
+<div th:each="result : ${contentList}" class="resultItem">
     <input type="hidden" th:value="${result.id}">
-    <span th:text="${result.content}"></span>
-    <span th:text="${result.writer}"></span>
+    <span class="content" th:text="${result.content}"></span>
+    <span class="writer" th:text="${result.writer}"></span>
     <form action="deleteEx" method="post">
         <input type="hidden" name="id" th:value="${result.id}">
         <input type="hidden" name="content" th:value="${result.content}">
         <input type="hidden" name="writer" th:value="${result.writer}">
         <input type="submit" value="삭제">
-        <a th:href="@{/exercise/{idValue}(idValue=${result.id})}">수정</a>
+        <a th:href="@{/exercise/detail/{idValue}(idValue=${result.id})}">수정</a>
     </form>
 </div>
 
@@ -33,24 +36,43 @@
 <div class="pagination">
     <ul style="display: flex;">
         <li style="margin-right: 10px; list-style: none;">
-            <a th:if="${page != 1}" th:href="@{/exercise/contentlist(page=1)}" >&laquo; 맨처음</a>
+            <a th:if="${page != 1}" th:href="@{/exercise/(page=1)}" >&laquo; 맨처음</a>
         </li>
-        <!--            <li>-->
-        <!--                <a th:if="${page > 1}" th:href="@{/members/contentlist(page=${(page-1)})}" style="margin-right: 10px; list-style: none;">이전</a>-->
-        <!--            </li>-->
         <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" style="margin-right: 10px; list-style: none;">
-            <a th:href="@{/exercise/contentlist(page=${pageNumber})}" th:text="${pageNumber}"></a>
+            <a th:href="@{/exercise/(page=${pageNumber})}" th:text="${pageNumber}"></a>
         </li>
         <li style="margin-right: 10px; list-style: none;">
-            <a th:if="${page < totalPages}" th:href="@{/exercise/contentlist(page=${page+1})}" >다음</a>
+            <a th:if="${page < totalPages}" th:href="@{/exercise/(page=${page+1})}" >다음</a>
         </li>
         <li style="margin-right: 10px; list-style: none;">
-            <a th:if="${page < totalPages}" th:href="@{/exercise/contentlist(page=${totalPages})}" >맨끝 &raquo;</a>
+            <a th:if="${page < totalPages}" th:href="@{/exercise/(page=${totalPages})}" >맨끝 &raquo;</a>
         </li>
     </ul>
 </div>
 
 
+<script>
+    // 검색 버튼 클릭 시 호출되는 함수
+    document.getElementById("searchButton").addEventListener("click", function() {
+        // 검색어 입력 필드에서 검색어를 가져옴
+        const searchKeyword = document.getElementById("search").value.toLowerCase();
+        // 모든 결과 아이템을 가져옴
+        const results = document.querySelectorAll(".resultItem");
+
+        // 각 결과 아이템을 순회하면서 검색어와 일치하는지 확인하여 화면에 표시 여부를 결정
+        results.forEach(function(result) {
+            const content = result.querySelector(".content").textContent.toLowerCase(); // 내용 텍스트를 가져와 소문자로 변환
+            const writer = result.querySelector(".writer").textContent.toLowerCase(); // 작성자 텍스트를 가져와 소문자로 변환
+
+            // 검색어가 내용이나 작성자에 포함되어 있으면 화면에 표시, 아니면 숨김
+            if (content.includes(searchKeyword) || writer.includes(searchKeyword)) {
+                result.style.display = "block"; // 화면에 표시
+            } else {
+                result.style.display = "none"; // 숨김
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
