@@ -17,12 +17,18 @@ public class ExerciseService {
         this.exerciseMapper = exerciseMapper;
     }
 
-    public void insertEx(String content, String writer) {
-        exerciseMapper.insertEx(content, writer);
+    //페이지네이션 포함
+    public List<Exercise> getContentListView(int offset) {
+        return exerciseMapper.contentListView(offset);
     }
 
-    public List<Exercise> selectEx() {
-        return exerciseMapper.selectEx();
+    //페이지네이션
+    public int getContentCount(String keyword) {
+        return exerciseMapper.getContentCount(keyword);
+    }
+
+    public void insertEx(String content, String writer) {
+        exerciseMapper.insertEx(content, writer);
     }
 
     public void deleteEx(String id, String content, String writer) {
@@ -30,11 +36,17 @@ public class ExerciseService {
     }
 
     public Exercise exerciseSelectDetail(String idValue) {
-        return exerciseMapper.exerciseSelectDetail(idValue);
+        Exercise exerciseSelectDetail = exerciseMapper.exerciseSelectDetail(idValue);
+        return exerciseSelectDetail;
     }
 
     public void exerciseUpdateDetail(String id, String content, String writer) {
         exerciseMapper.exerciseUpdateDetail(id, content, writer);
 
+    }
+
+    // 검색어
+    public List<Exercise> kewordSelect(int offset, String keyword) {
+        return exerciseMapper.kewordSelect(offset, keyword);
     }
 }

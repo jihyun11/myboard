@@ -7,13 +7,17 @@ import java.util.List;
 
 @Mapper
 public interface ExerciseMapper {
-    public void insertEx(String content, String writer);
 
-    public List<Exercise> selectEx();
+    List<Exercise> contentListView(int offset);
+    int getContentCount(String keyword);
+
+    public void insertEx(String content, String writer);
 
     public void deleteEx(String id, String content, String writer);
 
     public Exercise exerciseSelectDetail(String idValue);
 
     public void exerciseUpdateDetail(String id, String content, String writer);
+
+    List<Exercise> kewordSelect(int offset, String keyword);
 }

@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="euc-kr"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jihyun.myboard.mapper.ExerciseMapper">
+    <!--    페이지네이션 포함한 게시글 리스트 조회하는 쿼리-->
+    <select id="contentListView" resultType="com.jihyun.myboard.entity.Exercise">
+        SELECT
+            content,
+            writer,
+            id
+
+        FROM
+            Exercise
+        ORDER BY id DESC
+
+        LIMIT #{offset}, 5
+    </select>
+
+    <!--    페이지네이션의 전체 글의 개수를 세는 쿼리-->
+
+    <select id="getContentCount" resultType="int">
+        SELECT COUNT(*)
+        FROM Exercise
+        WHERE content like '%'||#{keyword}||'%' OR writer like '%'||#{keyword}||'%'
+    </select>
+
     <insert id="insertEx" parameterType="String">
         INSERT INTO Exercise (content, writer)
         VALUES (#{content}, #{writer});
     </insert>
 
-    <select id="selectEx" resultType="com.jihyun.myboard.entity.Exercise">
-        SELECT id, content, writer FROM Exercise;
-    </select>
 
     <delete id="deleteEx" parameterType="com.jihyun.myboard.entity.Exercise">
-        DELETE FROM Exercise WHERE id = #{id} AND content = #{content} AND writer = #{writer};
+        DELETE FROM Exercise WHERE id = #{id} and content = #{content} and writer = #{writer};
     </delete>
 
     <select id="exerciseSelectDetail" resultType="com.jihyun.myboard.entity.Exercise">
-        SELECT id, content, writer FROM Exercise WHERE id = #{idValue};
+        select id, content, writer from Exercise where id = #{idValue};
     </select>
 
     <update id="exerciseUpdateDetail" parameterType="com.jihyun.myboard.entity.Exercise">
         UPDATE Exercise SET content = #{content}, writer = #{writer}
-        WHERE id = #{id};
+        where id = #{id};
     </update>
+
+    <!-- 검색할때 검색어가 포함된 게시글만 조회하는 쿼리  -->
+    <select id="kewordSelect" resultType="com.jihyun.myboard.entity.Exercise">
+        SELECT
+            content,
+            writer,
+            id
+
+        FROM
+            Exercise
+        WHERE content like '%'||#{keyword}||'%' OR writer like '%'||#{keyword}||'%'
+        ORDER BY id DESC
+
+            LIMIT #{offset}, 5
+    </select>
+
 
 </mapper>
