@@ -25,9 +25,25 @@ public class ExerciseController {
     }
 
     @GetMapping("/exercise")
-    public String exersice(Model model) {
-        List<Exercise> selectExResult = exerciseService.selectEx();
-        model.addAttribute("selectExResult", selectExResult);
+    public String exersice(Model model,
+                           @RequestParam(value = "page", defaultValue = "1") int page,
+                           @RequestParam(value = "keword") String keword) {
+        int pageSize = 5; // 페이지당 게시글 수
+        int totalCount = exerciseService.getContentCount(keword);
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+        int offset = (page - 1) * pageSize;
+        List<Exercise> contentList = exerciseService.kewordSelect(offset, keword);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("contentList", contentList);
+        model.addAttribute("page", page);
+
+
+
+        log.info(keword);
+
+
         return "/exercise";
     }
 
@@ -48,8 +64,9 @@ public class ExerciseController {
         return "redirect:/exercise";
     }
 
-    @GetMapping("/exercise/{idValue}")
-    public String exerciseSelectDetail(@PathVariable("idValue") String idValue, Model model) {
+    @GetMapping("/exercise/detail/{idValue}")
+    public String exerciseSelectDetail(@PathVariable("idValue") String idValue, Model model,
+                                       @RequestParam(value = "page", defaultValue = "1") int page) {
         Exercise exercise = (exerciseService.exerciseSelectDetail(idValue));
         model.addAttribute("exercise", exercise);
         return "/exerciseDetail";
@@ -59,7 +76,7 @@ public class ExerciseController {
     public String exerciseUpdateDetail(@RequestParam String id,
                                        @RequestParam String content,
                                        @RequestParam String writer) {
-//        exerciseService.exerciseUpdateDetail(idValue, content, writer); todo 이 페이지에서 idValue 값은 필요가 없다.
+
         exerciseService.exerciseUpdateDetail(id, content, writer);
         return "redirect:/exercise";
     }
