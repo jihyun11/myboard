@@ -27,7 +27,7 @@ public class ExerciseController {
     @GetMapping("/exercise")
     public String exersice(Model model,
                            @RequestParam(value = "page", defaultValue = "1") int page,
-                           @RequestParam(value = "keword") String keword) {
+                           @RequestParam(value = "keword", required = false, defaultValue = "") String keword) {
         int pageSize = 5; // 페이지당 게시글 수
         int totalCount = exerciseService.getContentCount(keword);
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
@@ -40,9 +40,7 @@ public class ExerciseController {
         model.addAttribute("page", page);
 
 
-
         log.info(keword);
-
 
         return "/exercise";
     }
