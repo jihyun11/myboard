@@ -1,13 +1,14 @@
 package com.jihyun.myboard.controller;
 
 import com.jihyun.myboard.service.ApiService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class ApiController {
 
@@ -18,8 +19,12 @@ public class ApiController {
     }
 
     @GetMapping("/word")
-    public String getTranslate() {
-        return "word";
+    public String getTranslate(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+
+        if(username ==  null) {
+            return "login";
+        } else return "word";
     }
 
     @PostMapping("/word")
@@ -32,8 +37,8 @@ public class ApiController {
         model.addAttribute("originalText", text);
         model.addAttribute("result", result);
 
-        System.out.println("타임리프 result: " + result);
-        System.out.println("post wordtran 실행");
+        log.info("타임리프 result: " + result);
+        log.info("post wordtran 실행");
 
        return "word";
     }

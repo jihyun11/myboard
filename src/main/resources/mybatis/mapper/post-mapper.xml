@@ -16,7 +16,7 @@
 
     <update id="updatePost" parameterType="String">
         UPDATE post SET content = #{content}, writer = #{writer}
-                    where id = #{id};
+        where id = #{id};
     </update>
 
 </mapper>

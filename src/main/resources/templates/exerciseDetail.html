@@ -6,10 +6,13 @@
 </head>
 <body>
 <h2>오늘의 운동</h2>
-<form action="/exercise/detail" method="post">
+<form action="/exercise/detail" method="post" enctype="multipart/form-data">
     <input type="text" id="id" name="id" th:value="${exercise.id}" readonly>
     <input type="text" id="content" name="content" th:value="${exercise.content}">
+    <br>
     <input type="text" id="writer" name="writer" th:value="${exercise.writer}">
+    <input type="file" name="document" value="파일 등록">
+    <img th:if="${exercise.filename != null}" th:src="@{/image/{filename}(filename=${exercise.filename})}" alt="Image" width="100px" height="100px">
     <input type="submit" value="수정">
     <p>
     <p>

@@ -1,19 +1,15 @@
 package com.jihyun.myboard.service;
 
-//import org.h2.util.json.JSONObject;
-
-import org.json.JSONObject;
+import com.jihyun.myboard.exception.MyException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.JSONObject;
 
-
+@Slf4j
 @Service
 public class ApiService {
 
@@ -21,36 +17,34 @@ public class ApiService {
     private static final String CLIENT_SECRET = "XlgDyxer6x"; // 클라이언트 시크릿
     private static final String API_URL = "https://openapi.naver.com/v1/papago/n2mt";
 
-    String a;
+    String transWord;
 
     public String translate(String text, String srcLang, String targetLang) {
         try {
-            a = URLEncoder.encode(text, "UTF-8");
+            transWord = URLEncoder.encode(text, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("인코딩 실패", e);
+            throw new MyException("인코딩 실패", e);
         }
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
         requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
 
-        String responseBody = post(API_URL, requestHeaders, a, srcLang, targetLang);
-        System.out.println("responseBody: " + responseBody);
+        String responseBody = post(API_URL, requestHeaders, transWord, srcLang, targetLang);
+        log.info("responseBody: {}", responseBody);
 
         // JSON 객체로 파싱
         JSONObject jsonObj = new JSONObject(responseBody);
         // 'translatedText' 값을 추출
         String translatedText = jsonObj.getJSONObject("message").getJSONObject("result").getString("translatedText");
 
-        System.out.println(translatedText);
+        log.info("translatedText: {}", translatedText);
         return translatedText;
-
-
     }
 
     public static String post(String apiUrl, Map<String, String> requestHeaders, String text, String srcLang, String targetLang) {
         HttpURLConnection con = connect(apiUrl);
-        String postParams = "source="+srcLang+"&target="+targetLang+"&text=" + text; //원본언어: 한국어 (ko) -> 목적언어: 영어 (en)
+        String postParams = "source=" + srcLang + "&target=" + targetLang + "&text=" + text; //원본언어: 한국어 (ko) -> 목적언어: 영어 (en)
         try {
             con.setRequestMethod("POST");
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
@@ -70,7 +64,7 @@ public class ApiService {
                 return readBody(con.getErrorStream());
             }
         } catch (IOException e) {
-            throw new RuntimeException("API 요청과 응답 실패", e);
+            throw new MyException("API 요청과 응답 실패", e);
         } finally {
             con.disconnect();
         }
@@ -81,9 +75,9 @@ public class ApiService {
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+            throw new MyException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+            throw new MyException("연결이 실패했습니다. : " + apiUrl, e);
         }
     }
 
@@ -100,7 +94,7 @@ public class ApiService {
 
             return responseBody.toString();
         } catch (IOException e) {
-            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
+            throw new MyException("API 응답을 읽는데 실패했습니다.", e);
         }
     }
 }

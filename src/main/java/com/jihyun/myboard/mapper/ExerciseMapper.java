@@ -11,7 +11,7 @@ public interface ExerciseMapper {
     List<Exercise> contentListView(int offset);
     int getContentCount(String keyword);
 
-    public void insertEx(String content, String writer);
+    public void insertEx(String content, String writer, String filename);
 
     public void deleteEx(String id, String content, String writer);
 
@@ -19,5 +19,5 @@ public interface ExerciseMapper {
 
     public void exerciseUpdateDetail(String id, String content, String writer);
 
-    List<Exercise> kewordSelect(int offset, String keyword);
+    List<Exercise> selectKeyword(int offset, String keyword);
 }

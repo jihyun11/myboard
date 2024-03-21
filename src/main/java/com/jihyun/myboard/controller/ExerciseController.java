@@ -4,13 +4,15 @@ import com.jihyun.myboard.entity.Exercise;
 import com.jihyun.myboard.service.ExerciseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -18,6 +20,7 @@ import java.util.List;
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
+    public String uploadDir = "/Users/mozzi/Desktop/선생님PR용/src/main/resources/static/img/";
 
     @Autowired
     public ExerciseController(ExerciseService exerciseService) {
@@ -27,28 +30,45 @@ public class ExerciseController {
     @GetMapping("/exercise")
     public String exersice(Model model,
                            @RequestParam(value = "page", defaultValue = "1") int page,
-                           @RequestParam(value = "keword", required = false, defaultValue = "") String keword) {
+                           @RequestParam(value = "keyword",  required = false, defaultValue = "") String keyword) {
         int pageSize = 5; // 페이지당 게시글 수
-        int totalCount = exerciseService.getContentCount(keword);
+        int totalCount = exerciseService.getContentCount(keyword);
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
         int offset = (page - 1) * pageSize;
-        List<Exercise> contentList = exerciseService.kewordSelect(offset, keword);
+        List<Exercise> contentList = exerciseService.selectKeyword(offset, keyword);
 
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("contentList", contentList);
         model.addAttribute("page", page);
+        model.addAttribute("keyword", keyword);
+        // Cmd + Shift + R 정해진 문자열 바꾸기
+        // Cmd + Shift + F 전체 찾기
 
-
-        log.info(keword);
+        log.info(keyword);
 
         return "/exercise";
     }
 
-    @PostMapping("/exercise")
+    @PostMapping(value = "/exercise", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String insertEx(@RequestParam String content,
-                           @RequestParam String writer) {
-        exerciseService.insertEx(content, writer);
+                           @RequestParam String writer,
+                           @RequestPart MultipartFile document) {
+        if (document.isEmpty()) {
+            exerciseService.insertEx(content, writer, null);
+            return "redirect:/exercise";
+        }
+
+        try {
+            // 파일 저장 경로에 업로드된 파일 저장
+            String filename = document.getOriginalFilename();
+            document.transferTo(new File(uploadDir + filename));
+            exerciseService.insertEx(content, writer, filename);
+
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+
         log.info("등록한 내용: {}, {}", content, writer);
         return "redirect:/exercise";
     }

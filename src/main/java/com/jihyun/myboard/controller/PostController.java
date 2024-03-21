@@ -2,7 +2,7 @@ package com.jihyun.myboard.controller;
 
 import com.jihyun.myboard.entity.Post;
 import com.jihyun.myboard.service.PostService;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class PostController {
 
@@ -52,7 +53,6 @@ public class PostController {
                              @RequestParam String writer,
                              @RequestParam String id) {
         postService.updatePost(content, writer, id);
-        System.out.println("업데이트 컨트롤러");
         return "redirect:/guest";
     }
 

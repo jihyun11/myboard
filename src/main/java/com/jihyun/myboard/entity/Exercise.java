@@ -12,4 +12,6 @@ public class Exercise {
     private String content;
 
     private String writer;
+
+    private String filename;
 }

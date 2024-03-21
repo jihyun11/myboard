@@ -6,7 +6,8 @@
         SELECT
             content,
             writer,
-            id
+            id,
+            filename
 
         FROM
             Exercise
@@ -24,8 +25,8 @@
     </select>
 
     <insert id="insertEx" parameterType="String">
-        INSERT INTO Exercise (content, writer)
-        VALUES (#{content}, #{writer});
+        INSERT INTO Exercise (content, writer, filename)
+        VALUES (#{content}, #{writer}, #{filename});
     </insert>
 
 
@@ -34,7 +35,7 @@
     </delete>
 
     <select id="exerciseSelectDetail" resultType="com.jihyun.myboard.entity.Exercise">
-        select id, content, writer from Exercise where id = #{idValue};
+        select id, content, writer, filename from Exercise where id = #{idValue};
     </select>
 
     <update id="exerciseUpdateDetail" parameterType="com.jihyun.myboard.entity.Exercise">
@@ -43,11 +44,12 @@
     </update>
 
     <!-- 검색할때 검색어가 포함된 게시글만 조회하는 쿼리  -->
-    <select id="kewordSelect" resultType="com.jihyun.myboard.entity.Exercise">
+    <select id="selectKeyword" resultType="com.jihyun.myboard.entity.Exercise">
         SELECT
             content,
             writer,
-            id
+            id,
+            filename
 
         FROM
             Exercise

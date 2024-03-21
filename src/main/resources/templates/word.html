@@ -7,7 +7,9 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+<form action="/logout" method="post">
+    <input name="logout" type="submit" value="로그아웃">
+</form>
 <h1>가타카나 퀴즈</h1>
 <h4>해당 가타카나 발음과 같은 한글 발음을 고르세요</h4>
 <p id="kataWord">[가타카나 글자]</p>
@@ -45,11 +47,11 @@
     <br>
     <input type="submit" value="번역">
 
-    </div>
-    <div>
-        <h2>번역완료<br></h2>
-        <textarea id="translatedText" cols="80" rows="5" th:text="${result}"></textarea>
-    </div>
+</div>
+<div>
+    <h2>번역완료<br></h2>
+    <textarea id="translatedText" cols="80" rows="5" th:text="${result}"></textarea>
+</div>
 </form>
 
 

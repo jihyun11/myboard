@@ -27,8 +27,8 @@ public class ExerciseService {
         return exerciseMapper.getContentCount(keyword);
     }
 
-    public void insertEx(String content, String writer) {
-        exerciseMapper.insertEx(content, writer);
+    public void insertEx(String content, String writer, String filename) {
+        exerciseMapper.insertEx(content, writer, filename);
     }
 
     public void deleteEx(String id, String content, String writer) {
@@ -46,7 +46,7 @@ public class ExerciseService {
     }
 
     // 검색어
-    public List<Exercise> kewordSelect(int offset, String keyword) {
-        return exerciseMapper.kewordSelect(offset, keyword);
+    public List<Exercise> selectKeyword(int offset, String keyword) {
+        return exerciseMapper.selectKeyword(offset, keyword);
     }
 }
