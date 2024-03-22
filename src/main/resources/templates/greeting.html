@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>환영합니다, <span th:text="${username}"></span>님!</h1>
+
+<script>
+    setTimeout(function(){
+        window.location.href = '/word'; // 2초 후에 '/word' 페이지로 이동
+    }, 2000); // 2000ms = 2초
+</script>
+</body>
+</html>
