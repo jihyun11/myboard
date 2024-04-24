@@ -19,6 +19,30 @@
     <p>
 </form>
 
+<div id="output"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const idValue = document.getElementById('id').value;
+    axios.get('http://localhost:8080/api/ex/detail/' + idValue)
+        .then(function (response) {
+            const responseData = response.data.id; // 데이터 가져오기
+
+            //가져온 데이터 값을 원하는 곳에 뿌려주기
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerText = responseData;
+
+            //(개발자도구) 콘솔에 찍기
+            console.log(response);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+</script>
 
 </body>
 </html>

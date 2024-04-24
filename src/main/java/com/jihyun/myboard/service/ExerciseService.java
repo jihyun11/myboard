@@ -40,8 +40,8 @@ public class ExerciseService {
         return exerciseSelectDetail;
     }
 
-    public void exerciseUpdateDetail(String id, String content, String writer) {
-        exerciseMapper.exerciseUpdateDetail(id, content, writer);
+    public void exerciseUpdateDetail(String id, String content, String writer, String filename) {
+        exerciseMapper.exerciseUpdateDetail(id, content, writer, filename);
 
     }
 

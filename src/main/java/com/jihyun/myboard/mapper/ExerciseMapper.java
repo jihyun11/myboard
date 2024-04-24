@@ -17,7 +17,7 @@ public interface ExerciseMapper {
 
     public Exercise exerciseSelectDetail(String idValue);
 
-    public void exerciseUpdateDetail(String id, String content, String writer);
+    public void exerciseUpdateDetail(String id, String content, String writer, String filename);
 
     List<Exercise> selectKeyword(int offset, String keyword);
 }

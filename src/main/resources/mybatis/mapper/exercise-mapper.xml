@@ -38,8 +38,8 @@
         select id, content, writer, filename from Exercise where id = #{idValue};
     </select>
 
-    <update id="exerciseUpdateDetail" parameterType="com.jihyun.myboard.entity.Exercise">
-        UPDATE Exercise SET content = #{content}, writer = #{writer}
+    <update id="exerciseUpdateDetail">
+        UPDATE Exercise SET content = #{content}, writer = #{writer}, filename = #{filename}
         where id = #{id};
     </update>
 
