@@ -14,4 +14,8 @@ public class Exercise {
     private String writer;
 
     private String filename;
+
+    public Exercise(String id) {
+        this.id = id;
+    }
 }

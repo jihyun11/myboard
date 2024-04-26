@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>회원 가입</h2>
+<form action="/join" method="post" id="joinSubmit">
+    <input type="text" name="username" id="username" placeholder="아이디를 입력하세요"><br>
+    <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요"><br>
+    <input type="password" name="pwcheck" id="pwcheck" placeholder="비밀번호 확인"><br>
+    <input type="button" id="joinButton" value="가입">
+</form>
+<br>
+<br>
+<h2>로그인</h2>
+<form action="/join/login" method="post" id="loginSubmit">
+    <input type="text" name="usernameIn" id="usernameIn" placeholder="아이디를 입력하세요"><br>
+    <input type="password" name="passwordIn" id="passwordIn" placeholder="비밀번호를 입력하세요"><br>
+    <input type="password" name="pwcheckIn" id="pwcheckIn" placeholder="비밀번호 확인"><br>
+    <input type="button" id="loginButton" value="가입">
+</form>
+
+<script>
+    const joinButton = document.querySelector("#joinButton");
+    const passwordValue = document.querySelector("#password");
+    const pwCheckValue = document.querySelector("#pwcheck");
+    const joinSubmit = document.querySelector("#joinSubmit");
+
+    async function btnClick() {
+        const username = document.getElementById('username').value;
+
+        // 아이디를 입력하지 않았을 때
+        if (username.length == 0) {
+            alert("아이디를 입력해주세요.")
+            return;
+        }
+
+        const response = await axios.get('http://localhost:8080/api/members/' + username);
+        if (response.data == 0) {
+            alert("사용 가능한 아이디입니다.")
+
+        } else {
+            alert("중복된 아이디입니다.")
+            return;
+        }
+
+        //비밀번호 체크
+        const pwValue = passwordValue.value;
+        const checkValue = pwCheckValue.value;
+
+        if (pwValue != checkValue) {
+            alert("비밀번호가 같지 않습니다.")
+            return;
+        }
+
+
+        //비밀번호가 같을때
+        joinSubmit.submit();
+    }
+
+    joinButton.addEventListener("click", btnClick);
+
+</script>
+<script>
+    document.getElementById('loginButton').addEventListener('click', function() {
+        const username = document.getElementById('usernameIn').value;
+        const password = document.getElementById('passwordIn').value;
+        const pwcheck = document.getElementById('pwcheckIn').value;
+
+        // 비밀번호 확인
+        if (password !== pwcheck) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        // @RequestParam 방식으로 보내기
+        axios.post('/join/login?usernameIn='+ username +'&passwordIn='+ password,
+            { usernameIn: username, passwordIn: password })
+            .then(response => {
+                const result = response.data;
+                console.log(result);
+
+                if (result) {
+                    localStorage.setItem("username", result.usernameIn);
+                    localStorage.setItem("role", result.role);
+                    console.dir(localStorage.getItem("username"));
+                    console.dir(localStorage.getItem("role"));
+                    alert( localStorage.getItem("username") + ' 님이 로그인 하셨습니다. ' +
+                        '권한: ' + localStorage.getItem("role"));
+
+                    setTimeout(() => {
+                        // 환영메시지 후 본 페이지로 이동
+                        window.location.href = 'http://localhost:8080/content';
+                    }, 1000);
+                } else {
+                    alert('로그인 실패.');
+                }
+            })
+            .catch(error => {
+                console.error('로그인 에러:', error);
+                alert('로그인 실패.');
+            });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>

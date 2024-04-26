@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -60,9 +62,7 @@ public class ExerciseController {
         }
 
         try {
-            // 파일 저장 경로에 업로드된 파일 저장
-            String filename = document.getOriginalFilename();
-            document.transferTo(new File(uploadDir + filename));
+            String filename = fileUpload(document);
             exerciseService.insertEx(content, writer, filename);
 
         } catch (IOException e) {
@@ -73,12 +73,36 @@ public class ExerciseController {
         return "redirect:/exercise";
     }
 
-    @PostMapping("/deleteEx")
+    // 파일 업로드
+    private String fileUpload(MultipartFile document) throws IOException {
+        // 파일 저장 경로에 업로드된 파일 저장
+        String filename = document.getOriginalFilename();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentTime = dateFormat.format(new Date());
+        String fileFullName =  currentTime + filename;
+        document.transferTo(new File(uploadDir + fileFullName));
+        return fileFullName;
+    }
+
+    @PostMapping( "/deleteEx")
     public String deleteEx(@RequestParam String id,
                            @RequestParam String content,
-                           @RequestParam String writer) {
+                           @RequestParam String writer,
+                           @RequestParam String filename) {
+
+        if (filename.equals(null)) {
+            exerciseService.deleteEx(id, content, writer);
+            return "redirect:/exercise";
+        }
+
+        // 파일 저장 경로에 업로드된 파일 삭제
+        String fileroute = uploadDir + filename;
+        File fileToDelete = new File(fileroute);
+        fileToDelete.delete();
         exerciseService.deleteEx(id, content, writer);
+
         log.info("삭제된 내용: {}, {}, {}", id, content, writer);
+
         return "redirect:/exercise";
     }
 
@@ -90,12 +114,27 @@ public class ExerciseController {
         return "/exerciseDetail";
     }
 
-    @PostMapping("/exercise/detail")
+    @PostMapping(value = "/exercise/detail",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String exerciseUpdateDetail(@RequestParam String id,
                                        @RequestParam String content,
-                                       @RequestParam String writer) {
+                                       @RequestParam String writer,
+                                       @RequestPart MultipartFile document) {
 
-        exerciseService.exerciseUpdateDetail(id, content, writer);
+        if (document.isEmpty()) {
+            exerciseService.exerciseUpdateDetail(id, content, writer, null);
+            return "redirect:/exercise";
+        }
+
+        try {
+            // 파일 저장 경로에 업로드된 파일 저장
+            String filename = fileUpload(document);
+            exerciseService.exerciseUpdateDetail(id, content, writer, filename);
+
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        log.info("등록한 내용: {}, {}", content, writer);
         return "redirect:/exercise";
     }
 }
