@@ -12,4 +12,6 @@ public class ContentDTO {
     private String content;
 
     private String author;
+
+    private String role;
 }
