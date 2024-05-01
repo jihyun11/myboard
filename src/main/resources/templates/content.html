@@ -77,10 +77,12 @@
         const review = document.getElementById('review').value;
         const usernameElement = document.getElementById('username');
         const username = usernameElement.textContent.substring(0, usernameElement.textContent.length - 4);
+        const role = localStorage.getItem("role");
 
         axios.post('/api/content', {
             content: review,
-            author: username
+            author: username,
+            role: role
         })
             .then(response => {
                 alert("작성자: " + response.data.author + " 작성 내용: " + response.data.content);
@@ -88,6 +90,7 @@
             })
             .catch(error => {
                 console.error('오류 발생:', error);
+                alert(error.response.data);
             });
     }
 
