@@ -12,4 +12,6 @@ public class LoginDTO {
     private String passwordIn;
 
     private String role;
+
+    private String jwt;
 }

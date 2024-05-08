@@ -85,6 +85,7 @@
                 if (result) {
                     localStorage.setItem("username", result.usernameIn);
                     localStorage.setItem("role", result.role);
+                    localStorage.setItem("jwt", result.jwt);
                     console.dir(localStorage.getItem("username"));
                     console.dir(localStorage.getItem("role"));
                     alert( localStorage.getItem("username") + ' 님이 로그인 하셨습니다. ' +

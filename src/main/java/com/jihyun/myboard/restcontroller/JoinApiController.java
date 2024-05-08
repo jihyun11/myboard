@@ -4,6 +4,7 @@ import com.jihyun.myboard.dto.LoginDTO;
 import com.jihyun.myboard.entity.Exercise;
 import com.jihyun.myboard.service.ExerciseService;
 import com.jihyun.myboard.service.JoinService;
+import com.jihyun.myboard.token.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,12 @@ public class JoinApiController {
                               @RequestParam("passwordIn") String password) {
         log.info(username, password);
         LoginDTO loginDTO = joinService.selectLogin(username, password);
+
+        TokenUtil tokenUtil = new TokenUtil();
+        String jwt = tokenUtil.makeJwtToken(username, loginDTO.getRole());
+        System.out.println(jwt);
+
+        loginDTO.setJwt(jwt);
 
         return loginDTO;
     }
