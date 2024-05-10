@@ -70,7 +70,7 @@
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                // JWT 토큰을 헤더에 포함시킵니다.
+                // JWT 토큰을 헤더에 포함
                 'Authorization': `${jwtToken}`
             }})
             .then(response => {
@@ -112,7 +112,7 @@
             }, 100);
         }  if (role === "user") {
             alert('user 등급은 글쓰기 권한이 없습니다');
-            window.location.href = 'http://localhost:8080/join';
+            window.location.href = 'http://localhost:8080/contentlist';
         }
     }
     window.onload = getRole; // 페이지 로드될 때 바로 실행

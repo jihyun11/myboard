@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="euc-kr"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jihyun.myboard.mapper.ContentListMapper">
+
+    <select id="contentBookListView" resultType="com.jihyun.myboard.dto.ContentListDTO">
+        SELECT
+            id,
+            content,
+            author
+
+        FROM
+            content
+        ORDER BY id DESC
+    </select>
+
+
+</mapper>
