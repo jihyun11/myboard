@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    /* 테이블 컨테이너 스타일 */
+    .container {
+        width: 50%; /* 화면 가로의 절반 크기 설정 */
+        margin: 0 auto; /* 가운데 정렬 */
+    }
+
+    /* 테이블 스타일 */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+    }
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .styled-table th {
+        background-color: #009879;
+        color: #ffffff;
+    }
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+    .styled-table tbody tr:hover {
+        background-color: #ccc;
+    }
+</style>
+<body>
+
+<div class="container">
+    <h2>독후감 리스트</h2>
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Content</th>
+            <th>Author</th>
+        </tr>
+        </thead>
+        <tbody id="postTableBody">
+        </tbody>
+    </table>
+    <div>
+        <input type="text" id="search" name="search" placeholder="검색어를 입력하세요" th:value="${keyword}">
+        <button id="searchButton">검색</button>
+        <button onclick="window.location.href='http://localhost:8080/content'">글쓰기</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    axios.get('http://localhost:8080/content/book/list')
+        .then(function (response) {
+            const posts = response.data;
+
+            const postTable = document.getElementById('postTableBody');
+            posts.forEach(post => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${post.id}</td>
+                <td>${post.content}</td>
+                <td>${post.author}</td>
+            `;
+                postTable.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('글쓰기 목록을 불러오는 데에 실패했습니다:', error);
+            alert("글쓰기 목록을 불러오는 데에 실패했습니다")
+        });
+</script>
+</body>
+</html>
