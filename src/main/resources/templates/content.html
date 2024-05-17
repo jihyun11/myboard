@@ -60,13 +60,11 @@
         const review = document.getElementById('review').value;
         const usernameElement = document.getElementById('username');
         const username = usernameElement.textContent.substring(0, usernameElement.textContent.length - 4);
-        const role = localStorage.getItem("role");
         const jwtToken = localStorage.getItem('jwt');
 
         axios.post('/api/content', {
             content: review,
-            author: username,
-            role: role
+            author: username
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -76,6 +74,7 @@
             .then(response => {
                 alert("작성자: " + response.data.author + " 작성 내용: " + response.data.content);
                 clearForm(); // 제출 버튼을 누르면 내용란을 초기화한다
+                window.location.href = 'http://localhost:8080/contentlist';
             })
             .catch(error => {
                 console.error('오류 발생:', error);
@@ -87,17 +86,23 @@
     function getRole() {
         const userValue = localStorage.getItem('username');
         const role = localStorage.getItem("role");
+        const jwtToken = localStorage.getItem("jwt");
 
-        if (userValue !== null) {
+        if (jwtToken !== null) {
             const username = document.getElementById('username');
             username.textContent = userValue + '님의 글';
 
             axios.post('/role/check', {
-                username: userValue,
-                role: role
-            })
+                username: userValue
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // JWT 토큰을 헤더에 포함
+                    'Authorization': `${jwtToken}`
+                }})
                 .then(response => {
-                    alert("토큰 생성 완료");
+                    console.log(response.data);
+                    alert(response.data);
                 })
                 .catch(error => {
                     console.error('오류 발생:', error);
