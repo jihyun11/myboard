@@ -25,13 +25,13 @@ public class ContentApiController {
     // 부가적인 관점 - 저장할 때에 사용자의 권한을 확인하는 것
     public ContentDTO getContentDTO(@RequestBody ContentDTO contentDTO,
                                     @RequestHeader("Authorization") String jwt) {
-        Claims claims = TokenUtil.parseJwtToken(jwt);
-        String tokenRole = (String) claims.get("role");
-        System.out.println(tokenRole);
-
-        if (!tokenRole.equals("admin")) {
-            throw new MyException("admin이 아닙니다");
-        }
+//        Claims claims = TokenUtil.parseJwtToken(jwt);
+//        String tokenRole = (String) claims.get("role");
+//        System.out.println(tokenRole);
+//
+//        if (!tokenRole.equals("admin")) {
+//            throw new MyException("admin이 아닙니다");
+//        }
         log.info(contentDTO.getContent(), contentDTO.getAuthor());
         contentService.insertContent(contentDTO.getContent(), contentDTO.getAuthor());
 
@@ -41,13 +41,13 @@ public class ContentApiController {
         @PostMapping("/role/check")
         public String getRole(@RequestBody ContentDTO contentDTO,
                               @RequestHeader("Authorization") String jwt) {
-            Claims claims = TokenUtil.parseJwtToken(jwt);
-            String tokenRole = (String) claims.get("role");
-            System.out.println(tokenRole);
-
-            if (!tokenRole.equals("admin")) {
-                throw new MyException("admin이 아닙니다");
-            }
+//            Claims claims = TokenUtil.parseJwtToken(jwt);
+//            String tokenRole = (String) claims.get("role");
+//            System.out.println(tokenRole);
+//
+//            if (!tokenRole.equals("admin")) {
+//                throw new MyException("admin이 아닙니다");
+//            }
             log.info(contentDTO.getContent(), contentDTO.getAuthor());
 
             return "admin이 맞습니다";
