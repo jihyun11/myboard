@@ -13,5 +13,9 @@
         ORDER BY id DESC
     </select>
 
+    <delete id="deleteContentBookList" parameterType="com.jihyun.myboard.dto.ContentListDTO">
+        DELETE FROM content WHERE id = #{id} and author = #{author};
+    </delete>
+
 
 </mapper>

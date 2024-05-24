@@ -7,7 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface ContentListMapper {
-
     public List<ContentListDTO> contentBookListView();
+
+    public void deleteContentBookList(String id, String author);
 
 }
