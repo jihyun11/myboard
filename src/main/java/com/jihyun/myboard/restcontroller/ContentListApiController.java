@@ -32,4 +32,12 @@ public class ContentListApiController {
 
         return contentBookList;
     }
+
+    @PostMapping("/content/book/delete")
+    public String deleteContentBookList(@RequestBody ContentDTO contentDTO) {
+        if (contentListService.deleteContentBookList(contentDTO.getId(), contentDTO.getAuthor())) {
+            System.out.println("삭제된 게시글 아이디: " + contentDTO.getId());
+            return "success";
+        } else return "false";
+    }
 }

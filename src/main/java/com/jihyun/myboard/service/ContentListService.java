@@ -2,7 +2,6 @@ package com.jihyun.myboard.service;
 
 import com.jihyun.myboard.dto.ContentListDTO;
 import com.jihyun.myboard.mapper.ContentListMapper;
-import com.jihyun.myboard.mapper.ContentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,11 @@ public class ContentListService {
     public List<ContentListDTO> contentBookListView() {
         List<ContentListDTO> contentListResult = contentListMapper.contentBookListView();
         return contentListResult;
+    }
+
+    public boolean deleteContentBookList(String id, String author) {
+        contentListMapper.deleteContentBookList(id, author);
+        return true;
     }
 
 }

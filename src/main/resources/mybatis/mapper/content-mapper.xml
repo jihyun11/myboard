@@ -7,5 +7,4 @@
         VALUES (#{content}, #{author});
     </insert>
 
-
 </mapper>
